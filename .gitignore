@@ -9,6 +9,7 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
+/app/src/main/java/com/ricky/petfinderlayout/utils/Constants.kt
 /captures
 .externalNativeBuild
 .cxx
