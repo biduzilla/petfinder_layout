@@ -1,7 +1,6 @@
 package com.ricky.petfinderlayout.data.network.models
 
 import com.google.gson.annotations.SerializedName
-import com.ricky.petfinderlayout.data.network.models.Address
 
 
 data class Contact(

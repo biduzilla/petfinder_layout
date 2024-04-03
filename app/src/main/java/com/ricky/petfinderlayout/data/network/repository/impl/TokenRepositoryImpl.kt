@@ -1,5 +1,6 @@
 package com.ricky.petfinderlayout.data.network.repository.impl
 
+import android.util.Log
 import com.ricky.petfinderlayout.data.local.DataStoreUtil
 import com.ricky.petfinderlayout.data.network.models.AccessToken
 import com.ricky.petfinderlayout.data.network.repository.TokenRepository
@@ -18,6 +19,10 @@ class TokenRepositoryImpl @Inject constructor(
                 return token
             }
         } else {
+            Log.i(
+                "infoteste",
+                "fetchAccessToken: ${response.code()} - ${response.message()} - ${response.body()}"
+            )
             null
         }
     }
