@@ -1,8 +1,6 @@
 package com.ricky.petfinderlayout.domain.use_cases
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.util.Log
 import com.ricky.petfinderlayout.data.local.DataStoreUtil
 import com.ricky.petfinderlayout.data.network.models.ApiAnimals
 import com.ricky.petfinderlayout.domain.repository.PetRepository
@@ -17,12 +15,7 @@ class GetPets @Inject constructor(
     private val repository: PetRepository,
     private val dataStore: DataStoreUtil
 ) {
-    operator fun invoke(page: Int = 0): Flow<Resource<ApiAnimals>> = flow {
-        var token by mutableStateOf("")
-
-        dataStore.getToken().collect {
-            token = it
-        }
+    operator fun invoke(page: Int = 1, token: String): Flow<Resource<ApiAnimals>> = flow {
 
         try {
             emit(Resource.Loading())
@@ -39,7 +32,9 @@ class GetPets @Inject constructor(
                     emit(Resource.Error("Error inesperado"))
                 }
             } else {
-                emit(Resource.Error(message = "Error Status ${result.code()} - Message ${result.message()} - Body ${result.body()}"))
+                val errorBody = result.errorBody()?.string()
+                Log.i("infoteste", "Error Status ${result.code()} - Message ${result.message()} - Error Body $errorBody")
+                emit(Resource.Error("Error Status ${result.code()} - Message ${result.message()} - Error Body $errorBody"))
             }
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage ?: "Error inesperado"))

@@ -10,6 +10,7 @@ import com.ricky.petfinderlayout.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,10 +20,20 @@ class TestViewModel @Inject constructor(
     private val dataStore: DataStoreUtil
 ) : ViewModel() {
 
+    private var token: String = ""
+
     fun onEvent(event: TestEvent) {
         when (event) {
             TestEvent.OnToken -> loadToken()
-            TestEvent.OnPets -> TODO()
+            TestEvent.OnPets -> loadPets()
+        }
+    }
+
+    init {
+        viewModelScope.launch {
+            dataStore.getToken().collect {
+                token = it
+            }
         }
     }
 
@@ -45,7 +56,9 @@ class TestViewModel @Inject constructor(
     }
 
     private fun loadPets() {
-        getPets().onEach { result ->
+        Log.i("infoteste", "loadPets")
+        getPets(page = 1, token = token).onEach { result ->
+            Log.i("infoteste", "result")
             when (result) {
                 is Resource.Error -> {
                     Log.i("infoteste", "Error: ${result.message}")
