@@ -1,4 +1,4 @@
-package com.ricky.petfinderlayout.data.network.repository
+package com.ricky.petfinderlayout.data.repository
 
 import com.ricky.petfinderlayout.data.network.models.AccessToken
 import com.ricky.petfinderlayout.data.network.retrofit.TokenApi

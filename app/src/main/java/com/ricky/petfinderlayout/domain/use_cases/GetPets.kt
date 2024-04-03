@@ -22,7 +22,6 @@ class GetPets @Inject constructor(
 
             val result = repository.getAnimails(
                 page = page,
-                token = token
             )
 
             if (result.isSuccessful) {
@@ -33,7 +32,10 @@ class GetPets @Inject constructor(
                 }
             } else {
                 val errorBody = result.errorBody()?.string()
-                Log.i("infoteste", "Error Status ${result.code()} - Message ${result.message()} - Error Body $errorBody")
+                Log.i(
+                    "infoteste",
+                    "Error Status ${result.code()} - Message ${result.message()} - Error Body $errorBody"
+                )
                 emit(Resource.Error("Error Status ${result.code()} - Message ${result.message()} - Error Body $errorBody"))
             }
         } catch (e: HttpException) {

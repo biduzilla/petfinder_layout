@@ -38,21 +38,12 @@ class TestViewModel @Inject constructor(
     }
 
     private fun loadToken() {
-        getToken().onEach { result ->
-            when (result) {
-                is Resource.Error -> {
-                    Log.i("infoteste", "Error: ${result.message}")
-                }
-
-                is Resource.Loading -> {
-                    Log.i("infoteste", "Loading")
-                }
-
-                is Resource.Success -> {
-                    Log.i("infoteste", "Sucess: ${result.data}")
-                }
+        viewModelScope.launch {
+            getToken()?.let {
+                val token = "${it.tokenType} ${it.accessToken}"
+                Log.i("infoteste", "token: $token")
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
     private fun loadPets() {

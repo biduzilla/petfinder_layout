@@ -2,10 +2,11 @@ package com.ricky.petfinderlayout.di
 
 import android.content.Context
 import com.ricky.petfinderlayout.data.local.DataStoreUtil
-import com.ricky.petfinderlayout.data.network.repository.PetRepositoryImpl
-import com.ricky.petfinderlayout.data.network.repository.TokenRepositoryImpl
+import com.ricky.petfinderlayout.data.network.interceptors.AuthInterceptor
 import com.ricky.petfinderlayout.data.network.retrofit.PetFinderApi
 import com.ricky.petfinderlayout.data.network.retrofit.TokenApi
+import com.ricky.petfinderlayout.data.repository.PetRepositoryImpl
+import com.ricky.petfinderlayout.data.repository.TokenRepositoryImpl
 import com.ricky.petfinderlayout.domain.repository.PetRepository
 import com.ricky.petfinderlayout.domain.repository.TokenRepository
 import com.ricky.petfinderlayout.utils.Constants
@@ -14,6 +15,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -40,9 +42,14 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providePetFinderApi(): PetFinderApi {
+    fun providePetFinderApi(authInterceptor: AuthInterceptor): PetFinderApi {
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
+            .build()
+
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(PetFinderApi::class.java)

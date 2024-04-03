@@ -1,4 +1,4 @@
-package com.ricky.petfinderlayout.data.network.repository
+package com.ricky.petfinderlayout.data.repository
 
 import com.ricky.petfinderlayout.data.network.models.ApiAnimal
 import com.ricky.petfinderlayout.data.network.models.ApiAnimals
@@ -8,11 +8,11 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class PetRepositoryImpl @Inject constructor(private val api: PetFinderApi) : PetRepository {
-    override suspend fun getAnimails(token: String, page: Int): Response<ApiAnimals> {
-        return api.getAnimals(page = page, token = token)
+    override suspend fun getAnimails(page: Int): Response<ApiAnimals> {
+        return api.getAnimals(page = page)
     }
 
-    override suspend fun getAnimal(id: Int, token: String): Response<ApiAnimal> {
-        return api.getAnimal(id = id, token = token)
+    override suspend fun getAnimal(id: Int): Response<ApiAnimal> {
+        return api.getAnimal(id = id)
     }
 }

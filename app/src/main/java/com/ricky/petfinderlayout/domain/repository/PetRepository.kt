@@ -5,6 +5,6 @@ import com.ricky.petfinderlayout.data.network.models.ApiAnimals
 import retrofit2.Response
 
 interface PetRepository {
-    suspend fun getAnimails(token: String, page: Int): Response<ApiAnimals>
-    suspend fun getAnimal(id: Int, token: String): Response<ApiAnimal>
+    suspend fun getAnimails(page: Int): Response<ApiAnimals>
+    suspend fun getAnimal(id: Int): Response<ApiAnimal>
 }
