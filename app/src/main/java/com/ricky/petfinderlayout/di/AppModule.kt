@@ -38,10 +38,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideTokenRepository(
-        api: TokenApi,
-        dataStoreUtil: DataStoreUtil
+        api: TokenApi
     ): TokenRepository {
-        return TokenRepositoryImpl(dataStoreUtil = dataStoreUtil, api = api)
+        return TokenRepositoryImpl(api = api)
     }
 
 }
