@@ -1,4 +1,4 @@
-package com.ricky.petfinderlayout.data.network.repository
+package com.ricky.petfinderlayout.domain.repository
 
 import com.ricky.petfinderlayout.data.network.models.AccessToken
 import retrofit2.Response

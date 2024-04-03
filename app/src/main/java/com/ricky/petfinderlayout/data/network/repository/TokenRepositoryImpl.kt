@@ -1,7 +1,7 @@
-package com.ricky.petfinderlayout.data.network.repository.impl
+package com.ricky.petfinderlayout.data.network.repository
 
 import com.ricky.petfinderlayout.data.network.models.AccessToken
-import com.ricky.petfinderlayout.data.network.repository.TokenRepository
+import com.ricky.petfinderlayout.domain.repository.TokenRepository
 import com.ricky.petfinderlayout.data.network.retrofit.TokenApi
 import retrofit2.Response
 import javax.inject.Inject

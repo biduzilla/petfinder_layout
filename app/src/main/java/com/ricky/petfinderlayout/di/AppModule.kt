@@ -2,9 +2,12 @@ package com.ricky.petfinderlayout.di
 
 import android.content.Context
 import com.ricky.petfinderlayout.data.local.DataStoreUtil
-import com.ricky.petfinderlayout.data.network.repository.TokenRepository
-import com.ricky.petfinderlayout.data.network.repository.impl.TokenRepositoryImpl
+import com.ricky.petfinderlayout.data.network.repository.PetRepositoryImpl
+import com.ricky.petfinderlayout.domain.repository.TokenRepository
+import com.ricky.petfinderlayout.data.network.repository.TokenRepositoryImpl
+import com.ricky.petfinderlayout.data.network.retrofit.PetFinderApi
 import com.ricky.petfinderlayout.data.network.retrofit.TokenApi
+import com.ricky.petfinderlayout.domain.repository.PetRepository
 import com.ricky.petfinderlayout.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -41,6 +44,14 @@ object AppModule {
         api: TokenApi
     ): TokenRepository {
         return TokenRepositoryImpl(api = api)
+    }
+
+    @Provides
+    @Singleton
+    fun providePetRepository(
+        api: PetFinderApi
+    ): PetRepository {
+        return PetRepositoryImpl(api = api)
     }
 
 }

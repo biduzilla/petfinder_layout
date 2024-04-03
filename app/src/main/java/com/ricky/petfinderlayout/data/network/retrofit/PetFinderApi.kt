@@ -9,7 +9,7 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface PetFinder {
+interface PetFinderApi {
     @GET(Constants.BASE_END_POINT)
     suspend fun getAnimals(
         @Header("Authorization") token: String,
