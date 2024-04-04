@@ -1,7 +1,6 @@
 package com.ricky.petfinderlayout.data.network.interceptors
 
 import com.ricky.petfinderlayout.data.local.DataStoreUtil
-import com.ricky.petfinderlayout.domain.repository.TokenRepository
 import com.ricky.petfinderlayout.domain.use_cases.GetToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +12,6 @@ import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
     private val dataStoreUtil: DataStoreUtil,
-    private val tokenRepository: TokenRepository,
     private val getToken: GetToken
 ) : Interceptor {
     private var token = ""
@@ -28,17 +26,25 @@ class AuthInterceptor @Inject constructor(
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
+        val response = chain.proceed(request)
+
+        if (response.isSuccessful) {
+            return response
+        }
+
+        response.close()
+
         if (token.isNotBlank()) {
             val newRequest = request
                 .newBuilder()
                 .addHeader("Authorization", token)
                 .build()
-            val response = chain.proceed(newRequest)
-            return if (response.code == 401) {
-                response.close()
+            val responseToken = chain.proceed(newRequest)
+            return if (responseToken.code == 401) {
+                responseToken.close()
                 return refreshToken(chain)
             } else {
-                response
+                responseToken
             }
         } else {
             return refreshToken(chain)

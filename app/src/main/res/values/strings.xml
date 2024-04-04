@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PetFinderLayout</string>
+    <string name="saudacao">Bem vindo de volta</string>
+    <string name="encontrar_pet">Encontre um pet perto de você</string>
+    <string name="load_more">Mais Pets</string>
+    <string name="disponivel">Disponível</string>
 </resources>

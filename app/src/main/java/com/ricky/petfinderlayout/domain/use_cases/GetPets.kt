@@ -3,6 +3,8 @@ package com.ricky.petfinderlayout.domain.use_cases
 import android.util.Log
 import com.ricky.petfinderlayout.data.local.DataStoreUtil
 import com.ricky.petfinderlayout.data.network.models.ApiAnimals
+import com.ricky.petfinderlayout.data.network.models.toPet
+import com.ricky.petfinderlayout.domain.model.Pet
 import com.ricky.petfinderlayout.domain.repository.PetRepository
 import com.ricky.petfinderlayout.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +17,7 @@ class GetPets @Inject constructor(
     private val repository: PetRepository,
     private val dataStore: DataStoreUtil
 ) {
-    operator fun invoke(page: Int = 1, token: String): Flow<Resource<ApiAnimals>> = flow {
+    operator fun invoke(page: Int = 1): Flow<Resource<List<Pet>>> = flow {
 
         try {
             emit(Resource.Loading())
@@ -25,8 +27,14 @@ class GetPets @Inject constructor(
             )
 
             if (result.isSuccessful) {
-                result.body()?.let {
-                    emit(Resource.Success(data = it))
+                result.body()?.let { response ->
+                    val pets = response.animals.map { it.toPet() }
+
+                    pets.forEach{pet->
+                        pet.currentPage = response.pagination.currentPage
+                    }
+
+                    emit(Resource.Success(data = pets))
                 } ?: run {
                     emit(Resource.Error("Error inesperado"))
                 }
