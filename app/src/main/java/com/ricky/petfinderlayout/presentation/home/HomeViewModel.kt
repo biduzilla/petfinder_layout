@@ -1,5 +1,6 @@
 package com.ricky.petfinderlayout.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ricky.petfinderlayout.data.local.DataStoreUtil
@@ -21,13 +22,16 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow(HomeState())
     val state = _state.asStateFlow()
-    var isThemeDark = false
 
     init {
         loadPets()
         viewModelScope.launch {
             dataStore.getTheme().collect { isDark ->
-                isThemeDark = isDark
+                _state.update {
+                    it.copy(
+                        isDark = isDark
+                    )
+                }
             }
         }
     }
@@ -35,9 +39,9 @@ class HomeViewModel @Inject constructor(
     fun onEvent(event: HomeEvent) {
         when (event) {
             HomeEvent.OnChangeTheme -> {
+                Log.i("infoteste", "onEvent: onCHangeTHeme")
                 viewModelScope.launch {
-                    dataStore.saveTheme(!isThemeDark)
-                    isThemeDark = !isThemeDark
+                    dataStore.saveTheme(isDark = !_state.value.isDark)
                 }
             }
 
@@ -68,7 +72,7 @@ class HomeViewModel @Inject constructor(
                 is Resource.Loading -> {
                     _state.update {
                         it.copy(
-                            isLoading = true
+                            isLoadingMore = true
                         )
                     }
                 }
@@ -79,6 +83,7 @@ class HomeViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             pets = pets,
+                            isLoadingMore = false,
                             isLoading = false
                         )
                     }

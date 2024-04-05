@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ricky.petfinderlayout.R
+import com.ricky.petfinderlayout.navigation.Screens
 import com.ricky.petfinderlayout.presentation.home.components.PetInfoItem
 import com.ricky.petfinderlayout.presentation.home.components.TopBar
 
@@ -65,7 +66,7 @@ fun HomeScreen(
             ) {
                 items(state.pets) { pet ->
                     PetInfoItem(pet = pet) {
-//                        navController.navigate(Screens.DetailScreen.route + "/${pet.id}")
+                        navController.navigate(Screens.DetailScreen.route + "/${pet.id}")
                     }
                 }
                 if (state.isLoadingMore) {

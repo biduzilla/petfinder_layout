@@ -12,8 +12,11 @@ import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.ricky.petfinderlayout.presentation.details.DetailScreen
+import com.ricky.petfinderlayout.presentation.details.DetailsViewModel
 import com.ricky.petfinderlayout.presentation.home.HomeScreen
 import com.ricky.petfinderlayout.presentation.home.HomeViewModel
+import com.ricky.petfinderlayout.utils.Constants
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -26,6 +29,13 @@ fun AppNav() {
             val state by viewModel.state.collectAsState()
 
             HomeScreen(state = state, navController = navController, onEvent = viewModel::onEvent)
+        }
+
+        composableSlideHorizontally(Screens.DetailScreen.route + "/{${Constants.PARAM_PET_ID}}") {
+            val viewModel = hiltViewModel<DetailsViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            DetailScreen(state = state, navController = navController)
         }
     }
 }

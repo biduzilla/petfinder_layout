@@ -1,8 +1,5 @@
 package com.ricky.petfinderlayout.domain.use_cases
 
-import android.util.Log
-import com.ricky.petfinderlayout.data.local.DataStoreUtil
-import com.ricky.petfinderlayout.data.network.models.ApiAnimals
 import com.ricky.petfinderlayout.data.network.models.toPet
 import com.ricky.petfinderlayout.domain.model.Pet
 import com.ricky.petfinderlayout.domain.repository.PetRepository
@@ -15,7 +12,6 @@ import javax.inject.Inject
 
 class GetPets @Inject constructor(
     private val repository: PetRepository,
-    private val dataStore: DataStoreUtil
 ) {
     operator fun invoke(page: Int = 1): Flow<Resource<List<Pet>>> = flow {
 
@@ -30,7 +26,7 @@ class GetPets @Inject constructor(
                 result.body()?.let { response ->
                     val pets = response.animals.map { it.toPet() }
 
-                    pets.forEach{pet->
+                    pets.forEach { pet ->
                         pet.currentPage = response.pagination.currentPage
                     }
 
@@ -40,10 +36,6 @@ class GetPets @Inject constructor(
                 }
             } else {
                 val errorBody = result.errorBody()?.string()
-                Log.i(
-                    "infoteste",
-                    "Error Status ${result.code()} - Message ${result.message()} - Error Body $errorBody"
-                )
                 emit(Resource.Error("Error Status ${result.code()} - Message ${result.message()} - Error Body $errorBody"))
             }
         } catch (e: HttpException) {
